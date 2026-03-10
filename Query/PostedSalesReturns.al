@@ -6,12 +6,12 @@ codeunit 50120 PostedSalesReturnsAPI
         saCrMemoHeader: Record "Sales Cr.Memo Header";
         PoSalCretMemoLine: Record "Sales Cr.Memo Line";
         DimSetEntry: Record "Dimension Set Entry";
-        ItemRec: Record Item;
         Customer: Record Customer;
         DealerDistValue: Code[20];
+        ItemClassValue: Code[20];
         data: Text;
     begin
-        jsonarray := JsonArray;
+        Clear(jsonarray);
 
         if PoSalCretMemoLine.FindSet() then
             repeat
@@ -23,26 +23,34 @@ codeunit 50120 PostedSalesReturnsAPI
                                 (saCrMemoHeader.SystemCreatedAt <= toDat)) then
                             continue;
 
-                    // Handle Dimension Set (Dealer Dist)
                     DealerDistValue := '';
+                    ItemClassValue := '';
 
+                    // Read Dimension Set
                     DimSetEntry.Reset();
                     DimSetEntry.SetRange("Dimension Set ID", PoSalCretMemoLine."Dimension Set ID");
-                    DimSetEntry.SetRange("Dimension Code", 'DEALER DIST');
 
-                    if DimSetEntry.FindFirst() then
-                        DealerDistValue := DimSetEntry."Dimension Value Code";
+                    if DimSetEntry.FindSet() then
+                        repeat
+                            case DimSetEntry."Dimension Code" of
+                                'DEALER DIST':
+                                    DealerDistValue := DimSetEntry."Dimension Value Code";
+                                'ITEM CLASS':
+                                    ItemClassValue := DimSetEntry."Dimension Value Code";
+                            end;
+                        until DimSetEntry.Next() = 0;
 
-                    // Handle Item (may be blank)
-                    Clear(ItemRec);
-                    if not ItemRec.Get(PoSalCretMemoLine."No.") then
-                        ItemRec.Init();
-
+                    // Handle Customer
                     Clear(Customer);
                     if not Customer.Get(saCrMemoHeader."Sell-to Customer No.") then
                         Customer.Init();
 
-                    PrepareData(PoSalCretMemoLine, saCrMemoHeader, DealerDistValue, ItemRec, Customer);
+                    PrepareData(
+                        PoSalCretMemoLine,
+                        saCrMemoHeader,
+                        DealerDistValue,
+                        ItemClassValue,
+                        Customer);
 
                 end;
             until PoSalCretMemoLine.Next() = 0;
@@ -51,11 +59,12 @@ codeunit 50120 PostedSalesReturnsAPI
         exit(data);
     end;
 
+
     local procedure PrepareData(
         var PoSalCretMemoLine: Record "Sales Cr.Memo Line";
         var saCrMemoHeader: Record "Sales Cr.Memo Header";
         DealerDistValue: Code[20];
-        var ItemRec: Record Item;
+        ItemClassValue: Code[20];
         var Customer: Record Customer)
     begin
         Clear(jsonobject);
@@ -70,7 +79,7 @@ codeunit 50120 PostedSalesReturnsAPI
         jsonobject.Add('ZipCodefromSalesTransaction', saCrMemoHeader."Ship-to Post Code");
         jsonobject.Add('StatefromLineItem', saCrMemoHeader."Ship-to County");
         jsonobject.Add('Country', saCrMemoHeader."Ship-to Country/Region Code");
-        jsonobject.Add(('SalesRepCode'), saCrMemoHeader."Salesperson Code");
+        jsonobject.Add('SalesRepCode', saCrMemoHeader."Salesperson Code");
 
         jsonobject.Add('CustomerNo', saCrMemoHeader."Ship-to Code");
         jsonobject.Add('CustomerName', saCrMemoHeader."Ship-to Name");
@@ -79,28 +88,25 @@ codeunit 50120 PostedSalesReturnsAPI
         jsonobject.Add('ItemNo', PoSalCretMemoLine."No.");
         jsonobject.Add('ItemDescription', PoSalCretMemoLine.Description);
 
-        jsonobject.Add('Quantity', PoSalCretMemoLine.Quantity * -1); // multiply by -1 to convert to positive quantity for returns
+        // Convert returns to positive
+        jsonobject.Add('Quantity', PoSalCretMemoLine.Quantity * -1);
         jsonobject.Add('UnitPrice', PoSalCretMemoLine."Unit Price");
-        jsonobject.Add('ExtendedPrice', PoSalCretMemoLine."Line Amount" * -1); // multiply by -1 to convert to positive price for returns   
-        jsonobject.Add('Amount', PoSalCretMemoLine.Amount * -1); // multiply by -1 to convert to positive amount for returns    
+        jsonobject.Add('ExtendedPrice', PoSalCretMemoLine."Line Amount" * -1);
+        jsonobject.Add('Amount', PoSalCretMemoLine.Amount * -1);
 
         jsonobject.Add('LocationCode', PoSalCretMemoLine."Location Code");
 
         jsonobject.Add('CityfromCustomerMaster', Customer.City);
         jsonobject.Add('ZipfromCustomerMaster', Customer."Post Code");
 
-        // ItemClassCode (blank if ItemNo missing)
-        if ItemRec."No." <> '' then
-            jsonobject.Add('ItemClassCode', ItemRec."CS_shortcut Dimension 5 Code")
-        else
-            jsonobject.Add('ItemClassCode', '');
-
-        // Dimension value (blank if missing)
+        // Dimensions
+        jsonobject.Add('ItemClassCode', ItemClassValue);
         jsonobject.Add('SalespersonIDfromSalesTransaction', DealerDistValue);
         jsonobject.Add('SalespersonIDfromCustomerMaster', DealerDistValue);
 
         jsonarray.Add(jsonobject);
     end;
+
 
     var
         jsonobject: JsonObject;
