@@ -1,0 +1,39 @@
+{
+  "id": "818a1c36-3b1d-41f3-9d90-5ce3783ad10b",
+  "name": "Neev Custom App",
+  "publisher": "Neev Sytems",
+  "version": "1.0.0.18",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "id": "869c30c9-c5bf-42f4-a983-b63e7a9c14f7",
+      "name": "Mizuho",
+      "publisher": "Calsoft Publisher",
+      "version": "1.0.0.0"
+    }
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 90149
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "15.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}

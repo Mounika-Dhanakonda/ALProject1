@@ -1,0 +1,64 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // {
+        //     "name": "Mizuho Dev",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "Sandbox",
+        //     "environmentName": "SANDBOX",
+        //     "tenant": "eead5d80-47fe-4482-9dbf-4e69788e36b5",
+        //     "startupObjectId": 22,
+        //     "startupObjectType": "Page",
+        //     "breakOnError": "All",
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true
+        // },
+        {
+            "name": "Mizuho UAT",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "UAT",
+            "tenant": "eead5d80-47fe-4482-9dbf-4e69788e36b5",
+            "startupObjectId": 22,
+            "startupObjectType": "Page",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "Mizuho UAT2",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "UAT2",
+            "tenant": "eead5d80-47fe-4482-9dbf-4e69788e36b5",
+            "startupObjectId": 22,
+            "startupObjectType": "Page",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        }
+        // ,
+        // {
+        //     "name": "Mounika Sandbox",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "Sandbox",
+        //     "environmentName": "VisualPathBCTraining",
+        //     "tenant": "bc005111-c3b5-4436-94e0-898444c7b060",
+        //     "startupObjectId": 22,
+        //     "startupObjectType": "Page",
+        //     "breakOnError": "All",
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true
+        // }
+    ]
+}
