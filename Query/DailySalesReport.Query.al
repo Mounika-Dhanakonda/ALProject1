@@ -22,7 +22,7 @@ query 50151 "Daily Sales Report API"
             dataitem(SalesInvLine; "Sales Invoice Line")
             {
                 DataItemLink = "Document No." = SalesInvHeader."No.";
-                DataItemTableFilter = "No." = FILTER(<> 'HANDLINGFEE' & <> 'FREIGHT');
+                DataItemTableFilter = "No." = FILTER(<> 'HANDLINGFEE' & <> 'FREIGHT'), Quantity = FILTER(<> 0); // ✅ exclude 0 qty
 
                 column(DocumentNumber; "Document No.") { }
                 column(ItemNumber; "No.") { }
