@@ -29,22 +29,23 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "schemaUpdateMode": "ForceSync"
-        },
-        {
-            "name": "Mizuho UAT2",
-            "request": "launch",
-            "type": "al",
-            "environmentType": "Sandbox",
-            "environmentName": "UAT2",
-            "tenant": "eead5d80-47fe-4482-9dbf-4e69788e36b5",
-            "startupObjectId": 22,
-            "startupObjectType": "Page",
-            "breakOnError": "All",
-            "launchBrowser": true,
-            "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true,
-            "schemaUpdateMode": "ForceSync"
         }
+        // ,
+        // {
+        //     "name": "Mizuho UAT2",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "Sandbox",
+        //     "environmentName": "UAT2",
+        //     "tenant": "eead5d80-47fe-4482-9dbf-4e69788e36b5",
+        //     "startupObjectId": 22,
+        //     "startupObjectType": "Page",
+        //     "breakOnError": "All",
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true,
+        //     "schemaUpdateMode": "ForceSync"
+        // }
         // ,
         // {
         //     "name": "Mounika Sandbox",
